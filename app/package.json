@@ -1,0 +1,22 @@
+{
+  "name": "cloud-infrastructure-dashboard",
+  "version": "1.0.0",
+  "description": "Lightweight, responsive dashboard workload for cloud infrastructure deployments",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "cloud",
+    "dashboard",
+    "infrastructure",
+    "express",
+    "health-check"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
