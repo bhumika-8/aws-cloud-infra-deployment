@@ -158,6 +158,13 @@ body.cyber-body {
   box-shadow: 0 0 16px rgba(139, 92, 246, 0.2);
 }
 
+.brand-disc-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.5));
+}
+
 .brand-meta {
   display: flex;
   flex-direction: column;
@@ -506,7 +513,7 @@ body.cyber-body {
 }
 
 .health-grid {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .about-grid {
@@ -825,6 +832,30 @@ body.cyber-body {
   gap: 6px;
 }
 
+.meter-bar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.meter-title {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.meter-val-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--accent-pink);
+  background: rgba(236, 72, 153, 0.12);
+  border: 1px solid rgba(236, 72, 153, 0.25);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
 .meter-track {
   width: 100%;
   height: 8px;
@@ -847,6 +878,141 @@ body.cyber-body {
   font-family: var(--font-mono);
   font-size: 0.62rem;
   color: var(--text-muted);
+}
+
+/* ==========================================================================
+   FULL-WIDTH MEMORY MATRIX STYLING
+   ========================================================================== */
+.glass-card.memory-full-card {
+  grid-column: 1 / -1;
+  padding: 22px 24px;
+}
+
+.memory-wide-body {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 32px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.memory-gauge-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.memory-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.mem-stat-card {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(139, 92, 246, 0.18);
+  border-radius: 8px;
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: all 0.25s ease;
+}
+
+.mem-stat-card:hover {
+  background: rgba(139, 92, 246, 0.08);
+  border-color: rgba(139, 92, 246, 0.35);
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.12);
+  transform: translateY(-1px);
+}
+
+.mem-stat-label {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mem-stat-value {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.mem-stat-sub {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   FULL-WIDTH CPU MATRIX STYLING
+   ========================================================================== */
+.glass-card.cpu-full-card {
+  grid-column: 1 / -1;
+  padding: 22px 24px;
+}
+
+.cpu-wide-body {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 32px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.cpu-visual-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.cpu-calm-visual {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.cpu-core-ring {
+  border-color: rgba(56, 189, 248, 0.35);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+}
+
+.cpu-arc-sweep {
+  background: conic-gradient(from 0deg, rgba(56, 189, 248, 0.35) 0deg, transparent 65deg);
+}
+
+.cpu-wave-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cpu-wave-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.calm-wave-visual.wide-wave {
+  height: 28px;
+  padding: 4px 8px;
+  gap: 5px;
+}
+
+.calm-wave-visual.wide-wave span {
+  background: linear-gradient(0deg, #6366f1, #38bdf8);
+}
+
+.cpu-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
 }
 
 /* ==========================================================================
@@ -976,9 +1142,20 @@ body.cyber-body {
 }
 
 /* Responsive */
+@media (max-width: 960px) {
+  .memory-wide-body,
+  .cpu-wide-body {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
 @media (max-width: 860px) {
   .cyber-nav {
     display: none;
+  }
+  .health-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -995,8 +1172,13 @@ body.cyber-body {
     flex-direction: column;
     align-items: flex-start;
   }
-  .memory-calm-visual {
+  .memory-calm-visual,
+  .cpu-calm-visual {
     flex-direction: column;
     align-items: flex-start;
+  }
+  .memory-stats-grid,
+  .cpu-stats-grid {
+    grid-template-columns: 1fr;
   }
 }

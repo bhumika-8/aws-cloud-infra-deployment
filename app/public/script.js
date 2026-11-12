@@ -250,17 +250,22 @@
     sysNodeVersion.textContent = info.nodeVersion || 'Unavailable';
 
     // CPU details
+    const cpuCoresReadout = document.getElementById('cpu-cores-readout');
     if (info.cpu) {
       sysCpuModel.textContent = info.cpu.model || 'Unavailable';
       sysCpuModel.title = info.cpu.model || '';
       sysCpuCores.textContent = typeof info.cpu.cores === 'number' ? `${info.cpu.cores} Cores` : 'Unavailable';
       sysCpuSpeed.textContent = info.cpu.speedMhz ? `${info.cpu.speedMhz} MHz` : 'Unavailable';
       sysCpuArch.textContent = info.architecture || 'Unavailable';
+      if (cpuCoresReadout) {
+        cpuCoresReadout.textContent = typeof info.cpu.cores === 'number' ? info.cpu.cores : 'CPU';
+      }
     } else {
       sysCpuModel.textContent = 'Unavailable';
       sysCpuCores.textContent = 'Unavailable';
       sysCpuSpeed.textContent = 'Unavailable';
       sysCpuArch.textContent = 'Unavailable';
+      if (cpuCoresReadout) cpuCoresReadout.textContent = 'CPU';
     }
 
     // Memory details
