@@ -3,454 +3,492 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cloud Infrastructure Dashboard</title>
+  <title>CYBER_NODE // Cloud Infrastructure Dashboard</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600&family=Rajdhani:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
-<body>
-  <!-- Header Bar -->
-  <header class="app-header">
-    <div class="header-container">
-      <div class="brand-group">
-        <div class="brand-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
-          </svg>
-        </div>
-        <div class="brand-text">
-          <h1 class="brand-title">Cloud Infrastructure Dashboard</h1>
-          <span class="brand-tag">Workload Telemetry</span>
-        </div>
-      </div>
+<body class="cyber-body">
+  <!-- Subtle Atmospheric Starfield & Deep Nebula Glow -->
+  <div class="space-ambient-glow" aria-hidden="true"></div>
+  <div class="cyber-grid-subtle" aria-hidden="true"></div>
 
-      <nav class="nav-links" aria-label="Main Navigation">
-        <a href="#overview" class="nav-item active" data-nav="overview">Overview</a>
-        <a href="#system-health" class="nav-item" data-nav="system-health">System Health</a>
-        <a href="#about" class="nav-item" data-nav="about">About</a>
-      </nav>
+  <!-- Audio Element for User-Provided Ambient Soundscape -->
+  <audio id="ambient-audio" src="cyber-ambient.mp3" loop preload="auto"></audio>
 
-      <div class="header-actions">
-        <div class="status-indicator-badge" id="global-status-badge" title="Overall system connectivity">
-          <span class="status-dot"></span>
-          <span class="status-label" id="global-status-text">Connecting...</span>
-        </div>
-        <button id="refresh-btn" class="btn-refresh" title="Manually refresh dashboard metrics">
-          <svg class="refresh-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-            <path d="M3 3v5h5"></path>
-            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
-            <path d="M16 21h5v-5"></path>
-          </svg>
-          <span>Refresh</span>
-        </button>
-      </div>
-    </div>
-  </header>
+  <!-- Main Container Frame -->
+  <div class="hud-container">
 
-  <!-- Global Connectivity Banner for Degradation / Errors -->
-  <div id="alert-banner" class="alert-banner hidden" role="alert">
-    <div class="alert-content">
-      <svg class="alert-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"></circle>
-        <line x1="12" y1="8" x2="12" y2="12"></line>
-        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-      </svg>
-      <span id="alert-message">Unable to connect to the backend server. Retrying automatically...</span>
-    </div>
-    <button class="alert-dismiss" id="alert-dismiss" aria-label="Dismiss alert">&times;</button>
-  </div>
-
-  <!-- Main Container -->
-  <main class="dashboard-main">
-    <div class="dashboard-content">
-      
-      <!-- Sub-header metadata bar -->
-      <div class="metadata-strip">
-        <div class="meta-item">
-          <span class="meta-label">Environment:</span>
-          <span class="meta-value badge-neutral" id="meta-env">Node.js Production</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">Auto-Refresh:</span>
-          <span class="meta-value">Every 10 seconds</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">Last Synchronized:</span>
-          <span class="meta-value mono-text" id="meta-last-sync">--:--:--</span>
-        </div>
-      </div>
-
-      <!-- Section: Overview -->
-      <section id="overview" class="dashboard-section">
-        <div class="section-header">
-          <div class="section-title-wrap">
-            <h2 class="section-title">Overview</h2>
-            <p class="section-description">High-level application status and health probe metrics</p>
+    <!-- Top Sleek Header -->
+    <header class="cyber-header">
+      <div class="header-inner">
+        
+        <!-- Left: Brand / Node Identity -->
+        <div class="brand-block">
+          <div class="brand-monogram">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+              <path d="M2 17l10 5 10-5"></path>
+              <path d="M2 12l10 5 10-5"></path>
+            </svg>
+          </div>
+          <div class="brand-meta">
+            <div class="brand-caption">
+              <span class="pulse-beacon"></span>
+              <span class="caption-text">INFRASTRUCTURE TELEMETRY // NODE-01</span>
+            </div>
+            <h1 class="brand-title">Cloud Infrastructure Dashboard</h1>
           </div>
         </div>
 
+        <!-- Center: Minimalist Nav -->
+        <nav class="cyber-nav" aria-label="HUD Sections">
+          <a href="#overview" class="nav-link active" data-nav="overview">Overview</a>
+          <a href="#system-health" class="nav-link" data-nav="system-health">System Health</a>
+          <a href="#about" class="nav-link" data-nav="about">Architecture</a>
+        </nav>
+
+        <!-- Right: Audio Soundscape Controller + Refresh + Status -->
+        <div class="header-controls">
+          
+          <!-- Atmospheric Audio Soundscape Controller -->
+          <div class="audio-control-pill" id="audio-control-pill" title="Toggle Cyber Ambient Soundscape">
+            <button id="audio-toggle-btn" class="audio-toggle-btn" aria-label="Toggle Soundscape">
+              <span class="audio-waves" id="audio-waves-visual">
+                <span class="wave wave-1"></span>
+                <span class="wave wave-2"></span>
+                <span class="wave wave-3"></span>
+                <span class="wave wave-4"></span>
+              </span>
+              <span id="audio-state-label" class="audio-label">SOUNDSCAPE: OFF</span>
+            </button>
+          </div>
+
+          <!-- Live Status Beacon -->
+          <div class="status-beacon" id="global-status-badge">
+            <span class="beacon-ring"></span>
+            <span class="beacon-core"></span>
+            <span class="beacon-text" id="global-status-text">INITIALIZING</span>
+          </div>
+
+          <!-- Refresh Action -->
+          <button id="refresh-btn" class="cyber-refresh-btn" title="Manual Telemetry Poll">
+            <svg class="refresh-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+              <path d="M3 3v5h5"></path>
+              <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+              <path d="M16 21h5v-5"></path>
+            </svg>
+            <span>RE-SYNC</span>
+          </button>
+
+        </div>
+      </div>
+    </header>
+
+    <!-- Alert / Link Failure Banner -->
+    <div id="alert-banner" class="cyber-alert-banner hidden" role="alert">
+      <div class="alert-content">
+        <span class="alert-tag">DISCONNECTED</span>
+        <span id="alert-message">Telemetry uplink down. Retrying automatically in 10s...</span>
+        <button class="alert-close" id="alert-dismiss" aria-label="Dismiss">&times;</button>
+      </div>
+    </div>
+
+    <!-- Main Workspace -->
+    <main class="cyber-main">
+
+      <!-- Calm Telemetry Ticker Strip -->
+      <div class="telemetry-ticker">
+        <div class="ticker-item">
+          <span class="ticker-label">TARGET CLUSTER:</span>
+          <span class="ticker-val" id="meta-env">AWS WORKLOAD NODE</span>
+        </div>
+        <div class="ticker-separator">·</div>
+        <div class="ticker-item">
+          <span class="ticker-label">FREQUENCY:</span>
+          <span class="ticker-val">10s INTERVAL</span>
+        </div>
+        <div class="ticker-separator">·</div>
+        <div class="ticker-item">
+          <span class="ticker-label">SYNCHRONIZED:</span>
+          <span class="ticker-val mono" id="meta-last-sync">--:--:--</span>
+        </div>
+        <div class="ticker-separator">·</div>
+        <div class="ticker-item">
+          <span class="ticker-label">AMBIENT UPLINK:</span>
+          <span class="ticker-val" id="uplink-status">STANDBY</span>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 01: OVERVIEW                                     -->
+      <!-- ======================================================== -->
+      <section id="overview" class="cyber-section">
+        <div class="section-title-wrap">
+          <span class="section-num">01</span>
+          <h2 class="section-title">Core Telemetry Overview</h2>
+          <div class="section-line"></div>
+        </div>
+
         <div class="card-grid overview-grid">
+          
           <!-- Application Status Card -->
-          <div class="metric-card" id="card-status">
-            <div class="card-header">
-              <span class="card-title">Application Status</span>
-              <div class="card-icon status-icon-wrap">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                </svg>
-              </div>
+          <div class="glass-card" id="card-status">
+            <div class="card-head">
+              <span class="card-label">Application Status</span>
+              <span class="card-sys-tag">/api/health</span>
             </div>
             <div class="card-body">
-              <div class="status-pill-display" id="overview-status-pill">
-                <span class="pill-dot"></span>
-                <span class="pill-text" id="overview-status-value">Checking...</span>
+              <div class="status-pill" id="overview-status-pill">
+                <span class="status-glow-dot"></span>
+                <span class="status-name" id="overview-status-value">CHECKING...</span>
               </div>
-              <div class="card-meta">
-                <span class="card-subtext" id="overview-status-detail">Verifying backend probe...</span>
-              </div>
+              <p class="card-detail" id="overview-status-detail">Verifying backend probe...</p>
+            </div>
+            <div class="card-foot">
+              <span class="foot-metric">PROBE: LIVE</span>
             </div>
           </div>
 
           <!-- Server Uptime Card -->
-          <div class="metric-card" id="card-uptime">
-            <div class="card-header">
-              <span class="card-title">Server Uptime</span>
-              <div class="card-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
-              </div>
+          <div class="glass-card" id="card-uptime">
+            <div class="card-head">
+              <span class="card-label">Server Process Uptime</span>
+              <span class="card-sys-tag">RUNTIME</span>
             </div>
             <div class="card-body">
-              <div class="metric-value-primary mono-text" id="overview-uptime-value">--</div>
-              <div class="card-meta">
-                <span class="card-subtext" id="overview-uptime-detail">Node.js process duration</span>
-              </div>
+              <div class="metric-hero" id="overview-uptime-value">--</div>
+              <p class="card-detail" id="overview-uptime-detail">Active Node.js process duration</p>
+            </div>
+            <div class="card-foot">
+              <span class="foot-metric">TIMER: RESOLVED</span>
             </div>
           </div>
 
           <!-- Application Version Card -->
-          <div class="metric-card" id="card-version">
-            <div class="card-header">
-              <span class="card-title">Application Version</span>
-              <div class="card-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m7 15 5 5 5-5"></path>
-                  <path d="m7 9 5-5 5 5"></path>
-                </svg>
-              </div>
+          <div class="glass-card" id="card-version">
+            <div class="card-head">
+              <span class="card-label">Application Release</span>
+              <span class="card-sys-tag">VERSION</span>
             </div>
             <div class="card-body">
-              <div class="metric-value-primary mono-text" id="overview-version-value">--</div>
-              <div class="card-meta">
-                <span class="card-subtext" id="overview-version-detail">Release package build</span>
-              </div>
+              <div class="metric-hero version-highlight" id="overview-version-value">--</div>
+              <p class="card-detail" id="overview-version-detail">Package release build</p>
+            </div>
+            <div class="card-foot">
+              <span class="foot-metric">CHANNEL: PRODUCTION</span>
             </div>
           </div>
 
-          <!-- Last Health-Check Timestamp Card -->
-          <div class="metric-card" id="card-timestamp">
-            <div class="card-header">
-              <span class="card-title">Last Health Check</span>
-              <div class="card-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-              </div>
+          <!-- Last Health Check Card -->
+          <div class="glass-card" id="card-timestamp">
+            <div class="card-head">
+              <span class="card-label">Last Health Check</span>
+              <span class="card-sys-tag">TIMESTAMP</span>
             </div>
             <div class="card-body">
-              <div class="metric-value-date mono-text" id="overview-timestamp-value">--</div>
-              <div class="card-meta">
-                <span class="card-subtext" id="overview-timestamp-detail">Timestamp from /api/health</span>
-              </div>
+              <div class="metric-timestamp" id="overview-timestamp-value">--</div>
+              <p class="card-detail" id="overview-timestamp-detail">Normalized host timestamp</p>
+            </div>
+            <div class="card-foot">
+              <span class="foot-metric">UTC CONVERTED</span>
             </div>
           </div>
+
         </div>
       </section>
 
-      <!-- Section: System Health -->
-      <section id="system-health" class="dashboard-section">
-        <div class="section-header">
-          <div class="section-title-wrap">
-            <h2 class="section-title">System Health</h2>
-            <p class="section-description">Genuine hardware and operating system telemetry retrieved via Node.js runtime APIs</p>
-          </div>
+      <!-- ======================================================== -->
+      <!-- SECTION 02: SYSTEM HEALTH                                -->
+      <!-- ======================================================== -->
+      <section id="system-health" class="cyber-section">
+        <div class="section-title-wrap">
+          <span class="section-num">02</span>
+          <h2 class="section-title">Hardware &amp; System Health</h2>
+          <div class="section-line"></div>
         </div>
 
         <div class="card-grid health-grid">
-          <!-- OS & Architecture Card -->
-          <div class="metric-card">
-            <div class="card-header">
-              <span class="card-title">Operating System & Architecture</span>
-              <div class="card-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect width="20" height="14" x="2" y="3" rx="2"></rect>
-                  <line x1="8" y1="21" x2="16" y2="21"></line>
-                  <line x1="12" y1="17" x2="12" y2="21"></line>
-                </svg>
-              </div>
+          
+          <!-- Operating System Card -->
+          <div class="glass-card">
+            <div class="card-head">
+              <span class="card-label">Operating System &amp; Kernel</span>
+              <span class="card-sys-tag">HOST</span>
             </div>
             <div class="card-body">
-              <div class="info-list">
-                <div class="info-row">
-                  <span class="info-label">Operating System</span>
-                  <span class="info-value mono-text" id="sys-os">--</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">OS Platform</span>
-                  <span class="info-value mono-text" id="sys-platform">--</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Architecture</span>
-                  <span class="info-value mono-text badge-pill" id="sys-arch">--</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">OS Kernel Release</span>
-                  <span class="info-value mono-text" id="sys-release">--</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Host System Uptime</span>
-                  <span class="info-value mono-text" id="sys-uptime">--</span>
-                </div>
+              <div class="meta-row">
+                <span class="meta-name">Operating System</span>
+                <span class="meta-data text-accent" id="sys-os">--</span>
               </div>
+              <div class="meta-row">
+                <span class="meta-name">OS Platform</span>
+                <span class="meta-data" id="sys-platform">--</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Architecture</span>
+                <span class="meta-pill" id="sys-arch">--</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Kernel Release</span>
+                <span class="meta-data" id="sys-release">--</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Machine Host Uptime</span>
+                <span class="meta-data text-pink" id="sys-uptime">--</span>
+              </div>
+            </div>
+            <div class="card-foot">
+              <span class="foot-metric">SOURCE: os.platform()</span>
             </div>
           </div>
 
-          <!-- Runtime & Platform Card -->
-          <div class="metric-card">
-            <div class="card-header">
-              <span class="card-title">Runtime Environment</span>
-              <div class="card-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="16 18 22 12 16 6"></polyline>
-                  <polyline points="8 6 2 12 8 18"></polyline>
-                </svg>
-              </div>
+          <!-- Runtime Environment Card -->
+          <div class="glass-card">
+            <div class="card-head">
+              <span class="card-label">Runtime Environment</span>
+              <span class="card-sys-tag">NODE_V8</span>
             </div>
             <div class="card-body">
-              <div class="info-list">
-                <div class="info-row">
-                  <span class="info-label">Node.js Version</span>
-                  <span class="info-value mono-text badge-pill-blue" id="sys-node-version">--</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Backend Framework</span>
-                  <span class="info-value">Express.js 4</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Process Execution</span>
-                  <span class="info-value mono-text">Single Instance</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Telemetry Source</span>
-                  <span class="info-value">Node.js os & process</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Measurement Mode</span>
-                  <span class="info-value">Genuine Runtime Data</span>
-                </div>
+              <div class="meta-row">
+                <span class="meta-name">Node.js Engine</span>
+                <span class="meta-pill-pink" id="sys-node-version">--</span>
               </div>
+              <div class="meta-row">
+                <span class="meta-name">Server Framework</span>
+                <span class="meta-data">Express.js 4</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Event Loop</span>
+                <span class="meta-data">Single Instance</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Telemetry Model</span>
+                <span class="meta-data text-accent">Native os &amp; process</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Integrity Verification</span>
+                <span class="meta-data text-cyan">100% Genuine Metrics</span>
+              </div>
+            </div>
+            <div class="card-foot">
+              <span class="foot-metric">SOURCE: process.version</span>
             </div>
           </div>
 
-          <!-- CPU Details Card -->
-          <div class="metric-card">
-            <div class="card-header">
-              <span class="card-title">CPU Specifications</span>
-              <div class="card-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                  <rect x="9" y="9" width="6" height="6"></rect>
-                  <path d="M9 1v3"></path>
-                  <path d="M15 1v3"></path>
-                  <path d="M9 20v3"></path>
-                  <path d="M15 20v3"></path>
-                  <path d="M20 9h3"></path>
-                  <path d="M20 14h3"></path>
-                  <path d="M1 9h3"></path>
-                  <path d="M1 14h3"></path>
-                </svg>
-              </div>
+          <!-- CPU Specifications Card -->
+          <div class="glass-card">
+            <div class="card-head">
+              <span class="card-label">CPU Architecture</span>
+              <span class="card-sys-tag">SILICON</span>
             </div>
             <div class="card-body">
-              <div class="info-list">
-                <div class="info-row">
-                  <span class="info-label">CPU Model</span>
-                  <span class="info-value mono-text text-truncate" id="sys-cpu-model" title="--">--</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Cores / Threads</span>
-                  <span class="info-value mono-text" id="sys-cpu-cores">--</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Clock Speed</span>
-                  <span class="info-value mono-text" id="sys-cpu-speed">--</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Hardware Architecture</span>
-                  <span class="info-value mono-text" id="sys-cpu-arch">--</span>
+              <div class="meta-row">
+                <span class="meta-name">Processor Model</span>
+                <span class="meta-data text-truncate text-accent" id="sys-cpu-model" title="--">--</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Logical Cores</span>
+                <span class="meta-data" id="sys-cpu-cores">--</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Clock Speed</span>
+                <span class="meta-data" id="sys-cpu-speed">--</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Instruction Set</span>
+                <span class="meta-pill" id="sys-cpu-arch">--</span>
+              </div>
+
+              <!-- Calm Subtle Wave Monitor -->
+              <div class="cpu-monitor-strip">
+                <span class="monitor-caption">CPU THREAD DISPATCH</span>
+                <div class="calm-wave-visual">
+                  <span style="--h: 30%;"></span>
+                  <span style="--h: 55%;"></span>
+                  <span style="--h: 40%;"></span>
+                  <span style="--h: 70%;"></span>
+                  <span style="--h: 35%;"></span>
+                  <span style="--h: 60%;"></span>
+                  <span style="--h: 45%;"></span>
+                  <span style="--h: 75%;"></span>
+                  <span style="--h: 50%;"></span>
+                  <span style="--h: 65%;"></span>
+                  <span style="--h: 40%;"></span>
+                  <span style="--h: 55%;"></span>
                 </div>
               </div>
+            </div>
+            <div class="card-foot">
+              <span class="foot-metric">SOURCE: os.cpus()</span>
             </div>
           </div>
 
-          <!-- Memory Usage Card -->
-          <div class="metric-card">
-            <div class="card-header">
-              <span class="card-title">System Memory</span>
-              <div class="card-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M6 19v-3"></path>
-                  <path d="M10 19v-3"></path>
-                  <path d="M14 19v-3"></path>
-                  <path d="M18 19v-3"></path>
-                  <path d="M6 8V5"></path>
-                  <path d="M10 8V5"></path>
-                  <path d="M14 8V5"></path>
-                  <path d="M18 8V5"></path>
-                  <rect width="20" height="8" x="2" y="8" rx="2"></rect>
-                </svg>
-              </div>
+          <!-- System Memory Card -->
+          <div class="glass-card">
+            <div class="card-head">
+              <span class="card-label">Physical Memory Allocation</span>
+              <span class="card-sys-tag">RAM</span>
             </div>
             <div class="card-body">
-              <div class="memory-meter-container">
-                <div class="meter-header">
-                  <span class="meter-label">Memory Utilization</span>
-                  <span class="meter-percentage mono-text" id="sys-mem-percent">--%</span>
+              
+              <!-- Subtle Radar Gauge and Progress Line -->
+              <div class="memory-calm-visual">
+                <div class="radar-calm-ring">
+                  <div class="radar-arc-sweep"></div>
+                  <div class="radar-readout">
+                    <span class="readout-num" id="sys-mem-percent">--%</span>
+                    <span class="readout-sub">USED</span>
+                  </div>
                 </div>
-                <div class="progress-bar-bg">
-                  <div class="progress-bar-fill" id="sys-mem-bar" style="width: 0%;"></div>
+
+                <div class="meter-bar-container">
+                  <div class="meter-track">
+                    <div class="meter-fill" id="sys-mem-bar" style="width: 0%;"></div>
+                  </div>
+                  <div class="meter-labels">
+                    <span>0 GB</span>
+                    <span>ALLOCATED</span>
+                    <span id="meter-max-label">TOTAL</span>
+                  </div>
                 </div>
               </div>
 
-              <div class="info-list compact">
-                <div class="info-row">
-                  <span class="info-label">Used Memory</span>
-                  <span class="info-value mono-text" id="sys-mem-used">--</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Available / Free</span>
-                  <span class="info-value mono-text text-success" id="sys-mem-free">--</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Total Installed</span>
-                  <span class="info-value mono-text" id="sys-mem-total">--</span>
-                </div>
+              <!-- Numerical Breakdown -->
+              <div class="meta-row">
+                <span class="meta-name">Committed RAM</span>
+                <span class="meta-data text-pink" id="sys-mem-used">--</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Free Physical RAM</span>
+                <span class="meta-data text-cyan" id="sys-mem-free">--</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Total Installed</span>
+                <span class="meta-data text-accent" id="sys-mem-total">--</span>
               </div>
             </div>
+            <div class="card-foot">
+              <span class="foot-metric">SOURCE: os.totalmem()</span>
+            </div>
           </div>
+
         </div>
       </section>
 
-      <!-- Section: About -->
-      <section id="about" class="dashboard-section">
-        <div class="section-header">
-          <div class="section-title-wrap">
-            <h2 class="section-title">About This Workload</h2>
-            <p class="section-description">Project purpose, architecture overview, and API endpoint reference</p>
-          </div>
+      <!-- ======================================================== -->
+      <!-- SECTION 03: ARCHITECTURE                                 -->
+      <!-- ======================================================== -->
+      <section id="about" class="cyber-section">
+        <div class="section-title-wrap">
+          <span class="section-num">03</span>
+          <h2 class="section-title">Workload Architecture</h2>
+          <div class="section-line"></div>
         </div>
 
         <div class="card-grid about-grid">
-          <!-- Architecture Overview -->
-          <div class="metric-card full-width">
-            <div class="card-header">
-              <span class="card-title">Cloud Infrastructure Workload Purpose</span>
+          
+          <!-- Context Brief Card -->
+          <div class="glass-card full-width">
+            <div class="card-head">
+              <span class="card-label">Mission Brief &amp; Cloud Workload Context</span>
+              <span class="card-sys-tag">SPECIFICATION</span>
             </div>
-            <div class="card-body prose-body">
+            <div class="card-body prose-content">
               <p>
-                The <strong>Cloud Infrastructure Dashboard</strong> is a functional, lightweight workload designed specifically for cloud infrastructure deployment projects. It acts as an operational service to validate cloud provisioning (e.g. AWS EC2, Elastic Container Service, Application Load Balancers, Target Group health checks, and Auto Scaling groups).
+                The <strong class="text-accent">Cloud Infrastructure Dashboard</strong> is a lightweight, responsive operational workload engineered to validate cloud infrastructure provisioning across AWS EC2, Elastic Container Service, Target Group health check probes, and Auto Scaling clusters.
               </p>
-              <div class="feature-bullets">
-                <div class="feature-item">
-                  <div class="feature-bullet-icon">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+              <div class="spec-feature-grid">
+                <div class="spec-card">
+                  <span class="spec-bullet">✦</span>
+                  <div class="spec-desc">
+                    <strong class="spec-title">Zero Mock Telemetry</strong>
+                    <p class="spec-text">All CPU metrics, memory allocations, and uptimes reflect genuine Node.js standard library kernel calls without arbitrary numbers or simulated values.</p>
                   </div>
-                  <span><strong>Zero Mock Data:</strong> All metrics, uptimes, and memory allocations are accurately calculated from genuine Node.js standard libraries (<code>os</code> and <code>process</code>).</span>
                 </div>
-                <div class="feature-item">
-                  <div class="feature-bullet-icon">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+                <div class="spec-card">
+                  <span class="spec-bullet">✦</span>
+                  <div class="spec-desc">
+                    <strong class="spec-title">Unified Express Architecture</strong>
+                    <p class="spec-text">A single Express.js instance concurrently serves static HUD assets and genuine REST API endpoints with minimal resource overhead.</p>
                   </div>
-                  <span><strong>Unified Architecture:</strong> A single Express.js process serves both static HTML/CSS/JS assets and REST API endpoints.</span>
                 </div>
-                <div class="feature-item">
-                  <div class="feature-bullet-icon">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+                <div class="spec-card">
+                  <span class="spec-bullet">✦</span>
+                  <div class="spec-desc">
+                    <strong class="spec-title">Load Balancer Ready</strong>
+                    <p class="spec-text">Features an industry-standard <code>GET /api/health</code> endpoint returning HTTP 200 for Application Load Balancers and automated orchestration health probes.</p>
                   </div>
-                  <span><strong>Infrastructure Ready:</strong> Provides an industry-standard <code>GET /api/health</code> endpoint for load balancer health checks and automated probes.</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- API Endpoint Catalog -->
-          <div class="metric-card full-width">
-            <div class="card-header">
-              <span class="card-title">REST API Endpoints Reference</span>
+          <!-- API Catalog Table Card -->
+          <div class="glass-card full-width">
+            <div class="card-head">
+              <span class="card-label">REST API Endpoint Catalog</span>
+              <span class="card-sys-tag">CATALOG</span>
             </div>
             <div class="card-body">
-              <div class="table-responsive">
-                <table class="api-table">
+              <div class="table-wrap">
+                <table class="calm-table">
                   <thead>
                     <tr>
                       <th>Method</th>
                       <th>Endpoint</th>
                       <th>Description</th>
-                      <th>Response Format</th>
+                      <th>Content-Type</th>
                       <th>Expected Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td><span class="method-badge get">GET</span></td>
+                      <td><span class="method-tag">GET</span></td>
                       <td><code class="endpoint-code">/api</code></td>
-                      <td>API catalog listing available service endpoints and status</td>
+                      <td>Service catalog listing all available endpoints</td>
                       <td><code>application/json</code></td>
-                      <td><span class="status-code-badge">200 OK</span></td>
+                      <td><span class="status-code-tag">200 OK</span></td>
                     </tr>
                     <tr>
-                      <td><span class="method-badge get">GET</span></td>
+                      <td><span class="method-tag">GET</span></td>
                       <td><code class="endpoint-code">/api/health</code></td>
-                      <td>Application health status, current timestamp, version, and uptime</td>
+                      <td>Application health status, current timestamp, version, and server uptime</td>
                       <td><code>application/json</code></td>
-                      <td><span class="status-code-badge">200 OK</span></td>
+                      <td><span class="status-code-tag">200 OK</span></td>
                     </tr>
                     <tr>
-                      <td><span class="method-badge get">GET</span></td>
+                      <td><span class="method-tag">GET</span></td>
                       <td><code class="endpoint-code">/api/system-info</code></td>
                       <td>Genuine operating system, hardware, CPU, and memory metrics</td>
                       <td><code>application/json</code></td>
-                      <td><span class="status-code-badge">200 OK</span></td>
+                      <td><span class="status-code-tag">200 OK</span></td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
+
         </div>
       </section>
 
-    </div>
-  </main>
+    </main>
 
-  <!-- Footer -->
-  <footer class="app-footer">
-    <div class="footer-container">
-      <div class="footer-left">
-        <span>Cloud Infrastructure Dashboard &bull; Workload Node</span>
+    <!-- Footer -->
+    <footer class="cyber-footer">
+      <div class="footer-content">
+        <span class="footer-left">CYBER_NODE // CLOUD INFRASTRUCTURE DASHBOARD</span>
+        <span class="footer-right">ATMOSPHERIC AMBIENT EDITION &bull; NODE.JS + EXPRESS + VANILLA JS</span>
       </div>
-      <div class="footer-right">
-        <span>Built with Node.js &amp; Express &bull; Vanilla HTML/CSS/JS</span>
-      </div>
-    </div>
-  </footer>
+    </footer>
+
+  </div>
 
   <script src="script.js"></script>
 </body>

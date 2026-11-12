@@ -1,15 +1,15 @@
 /**
- * Cloud Infrastructure Dashboard - Frontend Application Logic
- * Vanilla JavaScript (ES6+) for fetching genuine telemetry and updating the UI
+ * CALM MYSTERIOUS CYBER HUD CONTROLLER
+ * Integrates user-provided ambient audio soundscape,
+ * real-time genuine telemetry polling, and elegant UI updates.
  */
 
 (function () {
   'use strict';
 
-  // Configuration
-  const REFRESH_INTERVAL_MS = 10000; // 10 seconds periodic refresh
+  const REFRESH_INTERVAL_MS = 10000; // 10 seconds
 
-  // DOM Elements - Global & Navigation
+  // DOM Elements - Global & Nav
   const globalStatusBadge = document.getElementById('global-status-badge');
   const globalStatusText = document.getElementById('global-status-text');
   const refreshBtn = document.getElementById('refresh-btn');
@@ -17,7 +17,13 @@
   const alertMessage = document.getElementById('alert-message');
   const alertDismiss = document.getElementById('alert-dismiss');
   const metaLastSync = document.getElementById('meta-last-sync');
-  const navLinks = document.querySelectorAll('.nav-item');
+  const uplinkStatus = document.getElementById('uplink-status');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  // Audio Soundscape Elements
+  const ambientAudio = document.getElementById('ambient-audio');
+  const audioToggleBtn = document.getElementById('audio-toggle-btn');
+  const audioStateLabel = document.getElementById('audio-state-label');
 
   // DOM Elements - Overview Section
   const overviewStatusPill = document.getElementById('overview-status-pill');
@@ -43,17 +49,73 @@
   const sysMemUsed = document.getElementById('sys-mem-used');
   const sysMemFree = document.getElementById('sys-mem-free');
   const sysMemTotal = document.getElementById('sys-mem-total');
+  const meterMaxLabel = document.getElementById('meter-max-label');
 
   let refreshTimerId = null;
   let isFetching = false;
+  let isAudioPlaying = false;
+
+  // =========================================================================
+  // Atmospheric Ambient Soundscape Controller
+  // =========================================================================
+  if (ambientAudio) {
+    ambientAudio.volume = 0.45;
+  }
+
+  function toggleAudio() {
+    if (!ambientAudio) return;
+
+    if (!isAudioPlaying) {
+      ambientAudio.play().then(() => {
+        isAudioPlaying = true;
+        audioToggleBtn.classList.add('playing');
+        audioStateLabel.textContent = 'SOUNDSCAPE: ON';
+        if (uplinkStatus) uplinkStatus.textContent = 'SYNCHRONIZED';
+      }).catch((err) => {
+        console.warn('Audio playback prevented by browser policy:', err);
+      });
+    } else {
+      ambientAudio.pause();
+      isAudioPlaying = false;
+      audioToggleBtn.classList.remove('playing');
+      audioStateLabel.textContent = 'SOUNDSCAPE: MUTED';
+      if (uplinkStatus) uplinkStatus.textContent = 'STANDBY';
+    }
+  }
+
+  // Soft high-tech subtle chime for data refresh
+  let audioCtx = null;
+  function playSoftChime() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      if (!audioCtx) audioCtx = new AudioCtx();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+      osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.12); // A5
+
+      gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.14);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.15);
+    } catch {
+      // AudioContext unavailable
+    }
+  }
 
   // =========================================================================
   // Formatting Utilities
   // =========================================================================
 
-  /**
-   * Formats duration in seconds to a human-readable string (Xd Xh Xm Xs)
-   */
   function formatDuration(totalSeconds) {
     if (typeof totalSeconds !== 'number' || isNaN(totalSeconds) || totalSeconds < 0) {
       return 'Unavailable';
@@ -73,9 +135,6 @@
     return parts.join(' ');
   }
 
-  /**
-   * Formats byte values into appropriate GB/MB units
-   */
   function formatBytes(bytes) {
     if (typeof bytes !== 'number' || isNaN(bytes) || bytes < 0) {
       return 'Unavailable';
@@ -89,14 +148,11 @@
     return `${mb.toFixed(2)} MB`;
   }
 
-  /**
-   * Formats an ISO date string to a localized timestamp
-   */
   function formatTimestamp(isoString) {
     if (!isoString) return 'Unavailable';
     try {
       const date = new Date(isoString);
-      if (isNaN(date.getTime())) return 'Invalid date';
+      if (isNaN(date.getTime())) return 'Invalid timestamp';
       return date.toLocaleString(undefined, {
         year: 'numeric',
         month: 'short',
@@ -115,11 +171,9 @@
   // =========================================================================
 
   function setGlobalStatus(state, text) {
-    globalStatusBadge.className = 'status-indicator-badge';
+    globalStatusBadge.className = 'status-beacon';
     if (state === 'healthy') {
       globalStatusBadge.classList.add('status-healthy');
-    } else if (state === 'degraded') {
-      globalStatusBadge.classList.add('status-degraded');
     } else {
       globalStatusBadge.classList.add('status-offline');
     }
@@ -145,14 +199,11 @@
     }
   }
 
-  /**
-   * Sets UI elements to an unavailable state when requests fail
-   */
   function setUnavailableState() {
-    setGlobalStatus('offline', 'Unreachable');
-    overviewStatusPill.className = 'status-pill-display unhealthy';
+    setGlobalStatus('offline', 'OFFLINE');
+    overviewStatusPill.className = 'status-pill unhealthy';
     overviewStatusValue.textContent = 'Offline';
-    overviewStatusDetail.textContent = 'Backend server did not respond';
+    overviewStatusDetail.textContent = 'Host server did not respond';
 
     overviewUptimeValue.textContent = 'Unavailable';
     overviewVersionValue.textContent = 'Unavailable';
@@ -175,24 +226,18 @@
     sysMemTotal.textContent = 'Unavailable';
   }
 
-  /**
-   * Renders genuine health data into the Overview section
-   */
   function renderHealth(health) {
     const isHealthy = health.status === 'healthy' || health.status === 'ok';
 
-    overviewStatusPill.className = 'status-pill-display ' + (isHealthy ? 'healthy' : 'unhealthy');
-    overviewStatusValue.textContent = isHealthy ? 'Healthy' : 'Unhealthy';
-    overviewStatusDetail.textContent = isHealthy ? 'Probe returning HTTP 200' : 'Probe reported issue';
+    overviewStatusPill.className = 'status-pill ' + (isHealthy ? 'healthy' : 'unhealthy');
+    overviewStatusValue.textContent = isHealthy ? 'Operational' : 'Degraded';
+    overviewStatusDetail.textContent = isHealthy ? 'HTTP 200 health probe normal' : 'Health check anomaly reported';
 
     overviewUptimeValue.textContent = formatDuration(health.uptime);
     overviewVersionValue.textContent = health.version ? `v${health.version}` : 'Unavailable';
     overviewTimestampValue.textContent = formatTimestamp(health.timestamp);
   }
 
-  /**
-   * Renders genuine system info into the System Health section
-   */
   function renderSystemInfo(info) {
     // OS & Platform details
     sysOs.textContent = info.type || 'Unavailable';
@@ -224,17 +269,15 @@
       sysMemPercent.textContent = typeof usedPercent === 'number' ? `${usedPercent}%` : '--%';
       sysMemBar.style.width = typeof usedPercent === 'number' ? `${Math.min(Math.max(usedPercent, 0), 100)}%` : '0%';
 
-      if (typeof usedPercent === 'number' && usedPercent > 85) {
-        sysMemBar.classList.add('high-usage');
-      } else {
-        sysMemBar.classList.remove('high-usage');
-      }
-
       sysMemUsed.textContent = formatBytes(info.memory.usedBytes);
       sysMemFree.textContent = formatBytes(info.memory.freeBytes);
       sysMemTotal.textContent = formatBytes(info.memory.totalBytes);
+
+      if (meterMaxLabel) {
+        meterMaxLabel.textContent = formatBytes(info.memory.totalBytes);
+      }
     } else {
-      sysMemPercent.textContent = 'Unavailable';
+      sysMemPercent.textContent = '--%';
       sysMemBar.style.width = '0%';
       sysMemUsed.textContent = 'Unavailable';
       sysMemFree.textContent = 'Unavailable';
@@ -264,20 +307,19 @@
       const healthData = await healthRes.json();
       const sysData = await sysRes.json();
 
-      // Render retrieved data
       renderHealth(healthData);
       renderSystemInfo(sysData);
 
-      // Update global operational status
-      setGlobalStatus('healthy', 'Operational');
+      setGlobalStatus('healthy', 'OPERATIONAL');
       hideAlert();
 
-      // Update sync timestamp
       const now = new Date();
       metaLastSync.textContent = now.toLocaleTimeString();
+
+      playSoftChime();
     } catch (err) {
       console.error('Failed to fetch dashboard metrics:', err);
-      showAlert('Unable to connect to backend server. Retrying automatically in 10s...');
+      showAlert('Unable to establish telemetry connection with host node. Retrying in 10s...');
       setUnavailableState();
     } finally {
       isFetching = false;
@@ -297,8 +339,7 @@
       });
     });
 
-    // Update active nav based on viewport scroll position
-    const sections = document.querySelectorAll('.dashboard-section');
+    const sections = document.querySelectorAll('.cyber-section');
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver(
         (entries) => {
@@ -319,7 +360,7 @@
   }
 
   // =========================================================================
-  // Auto-Refresh & Lifecycle Management
+  // Lifecycle Management
   // =========================================================================
 
   function startAutoRefresh() {
@@ -334,17 +375,26 @@
     }
   }
 
-  // Pause periodic polling when user switches tabs to conserve resources
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
       fetchAllData();
       startAutoRefresh();
+      if (isAudioPlaying && ambientAudio) {
+        ambientAudio.play().catch(() => {});
+      }
     } else {
       stopAutoRefresh();
+      if (isAudioPlaying && ambientAudio) {
+        ambientAudio.pause();
+      }
     }
   });
 
   // Event Listeners
+  if (audioToggleBtn) {
+    audioToggleBtn.addEventListener('click', toggleAudio);
+  }
+
   refreshBtn.addEventListener('click', () => {
     fetchAllData();
   });
